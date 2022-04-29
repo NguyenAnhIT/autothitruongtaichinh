@@ -116,18 +116,18 @@ class HandelThread(QThread):
             excel = dataExcel.iloc[_countExcel]
             _countExcel += 1
             try:
-                firstname = excel.iloc[1]
-                numberphone = excel.iloc[3]
-                email = excel.iloc[2]
+                firstname = str(excel.iloc[1])
+                numberphone = str(excel.iloc[3])
+                email = str(excel.iloc[2])
             except Exception as e:
-                firstname = excel[0]
-                numberphone = excel[2]
-                email = excel[0]
+                firstname = str(excel[1])
+                numberphone = str(excel[3])
+                email = str(excel[2])
             # send fistname
             self.browser.find_element_by_css_selector('input[name="name"]').send_keys(str(firstname))
             sleep(1)
             # send email
-            self.browser.find_element_by_css_selector('input[name="email"]').send_keys(str(email if math.isnan(email) != True else ''))
+            self.browser.find_element_by_css_selector('input[name="email"]').send_keys('' if email  == 'nan' else email)
             sleep(1)
             # Send phone
             numberphone = str(numberphone)
@@ -138,7 +138,7 @@ class HandelThread(QThread):
             # Save last email
             try:
                 with open ('email.txt','w') as wEmail:
-                    wEmail.write(email if math.isnan(email) != True else firstname)
+                    wEmail.write(firstname if email == 'nan' else email)
             except:pass
             # Sleep time delay
             sleep(randint(5,8))
